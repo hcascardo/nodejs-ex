@@ -134,10 +134,10 @@ app.get('/createcol', function (req, res) {
             if (err) {
                 console.log('Error running count. Message:\n' + err);
             }
-            res.render('createcol.html', { humiditymsg: humidity, temperature: null, airhum: null, pageCountMessage: count });
+            res.render('createcol.html', { humiditymsg: null, temperature: null, airhum: null, pageCountMessage: count });
         });
         } else {
-            res.render('createcol.html', { humiditymsg: 99, temperature: null, airhum: null, pageCountMessage: null });
+            res.render('createcol.html', { humiditymsg: null, temperature: null, airhum: null, pageCountMessage: null });
         }
 });
 
