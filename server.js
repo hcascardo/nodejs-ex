@@ -123,10 +123,15 @@ app.get('/createcol', function (req, res) {
         var data = db.collection('data');
         // Create a document with data -- This data will be updated by a POST req from ESP32
         data.insert({ humidity: 20, temperature: 25, airhum: 17 });
-        res.render('createcol.html', { humiditymsg: null, temperature: null, airhum: null, pageCountMessage: count });
-    } else {
-        res.render('createcol.html', { humiditymsg: null, temperature: null, airhum: null, pageCountMessage: count });
-    }
+        col.count(function (err, count) {
+            if (err) {
+                console.log('Error running count. Message:\n' + err);
+            }
+            res.render('createcol.html', { humiditymsg: null, temperature: null, airhum: null, pageCountMessage: count });
+        });
+        } else {
+            res.render('createcol.html', { humiditymsg: null, temperature: null, airhum: null, pageCountMessage: null });
+        }
 });
 
 
