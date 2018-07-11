@@ -9,7 +9,8 @@ app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
-    ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '172.16.1.176',
+    //ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '172.16.1.176',
+    ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
     mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
     mongoURLLabel = "";
 
@@ -24,6 +25,8 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
   if (mongoHost && mongoPort && mongoDatabase) {
     //online
     mongoURLLabel = mongoURL = 'mongodb://';
+    //local
+    //mongoURLLabel = mongoURL = http://172.16.1.176/mydb:27017;
     if (mongoUser && mongoPassword) {
       mongoURL += mongoUser + ':' + mongoPassword + '@';
     }
