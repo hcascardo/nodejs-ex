@@ -24,8 +24,6 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
   if (mongoHost && mongoPort && mongoDatabase) {
     //online
     mongoURLLabel = mongoURL = 'mongodb://';
-    //local
-    //mongoURLLabel = mongoURL = 'http://172.16.1.176/mydb:27017';
     if (mongoUser && mongoPassword) {
       mongoURL += mongoUser + ':' + mongoPassword + '@';
     }
