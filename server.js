@@ -113,6 +113,22 @@ app.get('/stat', function (req, res) {
   }
 });
 
+app.get('/createcol', function (req, res) {
+    // try to initialize the db on every request if it's not already
+    // initialized.
+    if (!db) {
+        initDb(function (err) { });
+    }
+    if (db) {
+        var data = db.collection('data');
+        // Create a document with data -- This data will be updated by a POST req from ESP32
+        data.insert({ humidity:20, temperature:25, airhum:17 });
+    } else {
+        res.render('createcol.html', { humidity: null, temperature: null, airhum: null });
+    }
+});
+
+
 
 
 // error handling
