@@ -24,7 +24,7 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   if (mongoHost && mongoPort && mongoDatabase) {
     //online
-    mongoURLLabel = mongoURL = 'mongodb://';
+      mongoURLLabel = mongoURL = 'mongodb://127.0.0.1:27017';
     //local
     //mongoURLLabel = mongoURL = http://172.16.1.176/mydb:27017;
     if (mongoUser && mongoPassword) {
@@ -39,9 +39,13 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 var db = null,
     dbDetails = new Object();
 
-var initDb = function(callback) {
-  if (mongoURL == null) return;
-
+var initDb = function (callback) {
+    mongoURLLabel = mongoURL = 'mongodb://127.0.0.1:27017';
+    
+    if (mongoURL == null) {
+        console.log('mongoURL == null');
+        return;
+    }
   var mongodb = require('mongodb');
   if (mongodb == null) return;
 
@@ -51,7 +55,10 @@ var initDb = function(callback) {
       return;
     }
 
-    db = conn;
+      console.log(conn)
+      console.log(conn.databaseName)
+
+    db = conn.db('data');  
     dbDetails.databaseName = db.databaseName;
     dbDetails.url = mongoURLLabel;
     dbDetails.type = 'MongoDB';
@@ -63,6 +70,7 @@ var initDb = function(callback) {
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
+    
   if (!db) {
     initDb(function(err){});
   }
@@ -74,7 +82,7 @@ app.get('/', function (req, res) {
       if (err) {
         console.log('Error running count. Message:\n'+err);
       }
-      res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails });
+      res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails , mongoURLmsg : mongoURL, mongodbmsg : mongoDatabase});
     });
   } else {
     res.render('index.html', { pageCountMessage : null});
@@ -103,7 +111,7 @@ app.get('/stat', function (req, res) {
     initDb(function(err){});
   }
   if (db) {
-    var col = db.collection('counts');
+    var col = db.collection('counts'); 
     // Create a document with request IP and current time of request
     col.insert({ip: req.ip, date: Date.now()});
     col.count(function(err, count){
@@ -121,15 +129,24 @@ app.get('/createcol', function (req, res) {
     // try to initialize the db on every request if it's not already
     // initialized.
     if (!db) {
+        console.log('!DB');
         initDb(function (err) { });
     }
     if (db) {
-        var data = db.collection('data');
+        const data = db.collection('data');     
         var col = db.collection('counts');
         // Create a document with request IP and current time of request
         col.insert({ ip: req.ip, date: Date.now() });
+
+        col.find({})
         // Create a document with data -- This data will be updated by a POST req from ESP32
-        data.insert({ humidity: 20, temperature: 25, airhum: 17 });
+/*        console.log("[DEBUG] Inserting data..")
+        data.insert({ humidity: 50 }, function (err, result) {
+            console.log("[DEBUG] Error: " + err)
+            console.log("[DEBUG] res: " + JSON.stringify(result))
+        }); 
+        console.log("[DEBUG] Data inserted) */
+        data.insertMany([{ humidity: 20 }, { temperature: 25 }, { airhum: 17 } ]);
         col.count(function (err, count) {
             if (err) {
                 console.log('Error running count. Message:\n' + err);
