@@ -243,9 +243,25 @@ pre {
 
                 <p>Last irrigation pump #1: %t</p>
                 <p>Last irrigation pump #2: %t</p>
-                <!--
-                <h3>tbd</h3>
-                <p>tbd</p> -->
+                
+                <h3>MongoDB Info</h3>
+                <p>Mongo URL:
+                <% if (mongoURLmsg) { %>
+                   <span class="code" id="mongo-URL"><%=mongoURLmsg%></span>
+                   </p>
+                <% } else { %>
+                   <p>[DEBUG] No mongoURLmsg to display</p> &nbsp; </p>
+                <%} %>
+                <p>Mongo Database:
+                <% if (mongodbmsg) { %>
+                   <span class="code" id="mongo-DB"><%=mongodbmsg%></span>
+                   </p>
+                <% } else { %>
+                   <p>[DEBUG] No mongodbmsg to display</p> &nbsp; </p>
+                <%} %>
+
+                <p>tbd</p>
+
                 <span style="display:inline-block; width: 40;"></span>
                 <span style="display:inline-block; width: 40;"></span>
                 <h2>Request information</h2>
