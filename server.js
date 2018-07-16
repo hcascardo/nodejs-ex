@@ -40,7 +40,10 @@ var db = null,
     dbDetails = new Object();
 
 var initDb = function (callback) {
-    mongoURLLabel = mongoURL = 'mongodb://127.0.0.1:27017';
+    //local
+    //mongoURLLabel = mongoURL = 'mongodb://127.0.0.1:27017';
+    ///online
+    mongoURLLabel = mongoURL = 'mongodb://';
     
     if (mongoURL == null) {
         console.log('mongoURL == null');
